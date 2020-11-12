@@ -2,9 +2,7 @@
 var i2c         = require('i2c-bus')
 var async       = require('async')
 var log         = require('npmlog')
-var sleep       = require('sleep')
 var fs          = require('fs')
-var bufferTools = require('buffertools').extend()
 var commands    = require('./commands')
 
 var I2CCMD    = 1
@@ -23,6 +21,14 @@ var isBusy    = false
 var ADDRESS   = 0x04
 
 var onError, onInit
+
+// Alternative for module "sleep"
+function msleep(n) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
+}
+function sleep(n) {
+  msleep(n*1000);
+}
 
 function GrovePi(opts) {
   this.BYTESLEN = 4
@@ -66,7 +72,8 @@ GrovePi.prototype.init = function() {
 
     if (!isInit) {
       this.debug('GrovePi is initing')
-      sleep.sleep(initWait)
+      // Call sleep function instead of sleep module.
+      sleep(initWait)
       isInit = true
 
       if (typeof onInit == 'function')
@@ -170,7 +177,8 @@ GrovePi.prototype.debug = function(msg) {
     log.info('GrovePi.board', msg)
 }
 GrovePi.prototype.wait = function(ms) {
-  sleep.usleep(1000 * ms)
+  // Call msleep function instead of sleep module.
+  msleep(ms)
 }
 
 // GrovePi functions
