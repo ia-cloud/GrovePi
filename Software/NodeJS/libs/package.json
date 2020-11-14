@@ -1,8 +1,13 @@
 {
     "name": "@ia-cloud/node-grovepi",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "description": "GrovePi library for Node.js",
-    "keywords": ["grovepi", "robot", "gpio", "i2c"],
+    "keywords": [
+        "grovepi",
+        "robot",
+        "gpio",
+        "i2c"
+    ],
     "dependencies": {
         "async": "1.*",
         "i2c-bus": "5.*",
